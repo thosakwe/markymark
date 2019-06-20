@@ -10,7 +10,7 @@ main(List<String> args) {
   try {
     var result = parser.parse(args);
 
-    if (result['help']) return printUsage(args);
+    if (result['help'] as bool) return printUsage(args);
 
     return createServer(result, callback).then((server) {
       print('Serving at http://${server.address.host}:${server.port}');
@@ -38,8 +38,9 @@ printUsage(List<String> args) {
 
 callback(Directory dir, broadcast) {
   dir.watch(recursive: true).listen((e) {
-    if (!markdownExtensions.contains(p.url.extension(e.path).toLowerCase()))
+    if (!markdownExtensions.contains(p.url.extension(e.path).toLowerCase())) {
       return;
+    }
 
     print('The following file changed: ${e.path}');
 
